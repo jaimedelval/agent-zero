@@ -118,6 +118,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
         crossorigin="anonymous"></script>
 
+    <script src="https://rawgit.com/showdownjs/showdown/develop/dist/showdown.min.js"></script>
+
     <!-- Non-module scripts after Alpine.js -->
     <script type="text/javascript" src="js/settings.js"></script>
     <script type="text/javascript" src="js/file_browser.js"></script>
@@ -715,6 +717,19 @@
                             <div id="section-tunnel" class="section" x-show="activeTab === 'external'">
                                 <div class="section-title">Flare Tunnel</div>
                                 <div class="section-description">Create a secure public URL to access your Agent Zero instance anytime, anywhere.</div>
+                                <div class="field">
+                                    <div class="field-label">
+                                        <div class="field-title">Tunnel provider</div>
+                                        <div class="field-description">Select provider for public tunnel</div>
+                                    </div>
+                                    <div class="field-control">
+                                        <select id="tunnel-provider" x-model="provider" :disabled="isLoading">
+                                            <option value="serveo">Serveo</option>
+                                            <option value="cloudflared">Cloudflare</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Tunnel content UI -->
                                 <div class="tunnel-container" x-data="tunnelSettings">
                                     <!-- Loading spinner for tunnel operations -->
                                     <div class="loading-spinner" x-show="isLoading">
@@ -749,7 +764,6 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        
                                         <!-- Generate tunnel button when no link exists -->
                                         <div class="tunnel-actions" x-show="!linkGenerated">
                                             <button class="btn btn-ok" @click="generateLink()">
