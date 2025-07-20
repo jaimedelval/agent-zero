@@ -1,9 +1,12 @@
 services:
   agent-zero:
     image: agent0ai/agent-zero:latest
+    security_opt:
+      - no-new-privileges:false
     ports:
       - "50080:80"
     # drop most capabilities for safety
+    restart: unless-stopped
     cap_drop:
       - ALL
     environment:
