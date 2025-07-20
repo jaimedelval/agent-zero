@@ -2,7 +2,7 @@ services:
   agent-zero:
     image: agent0ai/agent-zero:latest
     ports:
-      - "50080:8080"
+      - "50080:80"
     # drop most capabilities for safety
     cap_drop:
       - ALL
