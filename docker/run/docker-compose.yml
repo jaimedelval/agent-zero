@@ -14,11 +14,6 @@ services:
   dind:
     image: docker:25.0-dind
     privileged: true
-    command: |
-      dockerd \
-        --host=tcp://0.0.0.0:2375 \
-        --storage-driver=overlay2 \
-        --data-root=/var/lib/docker
     expose:
       - "2375"
     volumes:
