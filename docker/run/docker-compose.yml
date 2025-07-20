@@ -18,7 +18,6 @@ services:
       dockerd \
         --host=tcp://0.0.0.0:2375 \
         --storage-driver=overlay2 \
-        --storage-opt dm.basesize=20G \
         --data-root=/var/lib/docker
     expose:
       - "2375"
