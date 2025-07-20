@@ -12,6 +12,7 @@ services:
       - ALL
     environment:
       DOCKER_HOST: tcp://dind:2375     # point it at the sidecar
+      SEARXNG_DISABLED: "true"
     depends_on:
       - dind
 
