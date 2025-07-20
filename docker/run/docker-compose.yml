@@ -1,10 +1,32 @@
+version: "3.9"
+
 services:
   agent-zero:
     image: agent0ai/agent-zero:latest
-    user: "0:0"                        # root inside container
+    container_name: agent-zero
+
+    # 1. Let A0 modify itself (root inside container)
+    user: "0:0"
+
+    # 2. Allow setuid (needed by the SearXNG helper) but still sandbox caps
     security_opt:
-      - no-new-privileges:false        # allow setuid here only
+      - no-new-privileges:false
     cap_drop:
-      - ALL                            # still no kernel caps
+      - ALL           # keeps kernel attack surface tiny
+
+    # 3. Give A0 Docker access for spawning child containers
+    volumes:
+      - ./agent-code:/a0            # persists its own source tree
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    environment:
+      DOCKER_HOST: unix:///var/run/docker.sock
+      SEARXNG_DISABLED: "false"     # keep the search helper
+      UI_USERNAME: "jaimedelval"
+      UI_PASSWORD: "ChangeMe_123!"
+      #  add your model keys, e.g. OPENAI_API_KEY, etc.
+
     ports:
-      - "50080:80"
+      - "50080:80"                  # internal HTTP; Cloudflare handles HTTPS
+
+    restart: unless-stopped
