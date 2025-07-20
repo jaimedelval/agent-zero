@@ -23,7 +23,7 @@ services:
       DOCKER_HOST: unix:///var/run/docker.sock
       SEARXNG_DISABLED: "false"     # keep the search helper
       UI_USERNAME: "jaimedelval"
-      UI_PASSWORD: "ChangeMe_123!"
+      UI_PASSWORD: "Jaime_963214#"
       #  add your model keys, e.g. OPENAI_API_KEY, etc.
 
     ports:
