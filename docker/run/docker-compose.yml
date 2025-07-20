@@ -1,6 +1,7 @@
 services:
   agent-zero:
     image: agent0ai/agent-zero:latest
+    user: "0:0"                  # run as root *inside* the container
     security_opt:
       - no-new-privileges:false
     ports:
