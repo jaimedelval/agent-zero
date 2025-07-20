@@ -1,8 +1,23 @@
 services:
   agent-zero:
-    container_name: agent-zero
     image: agent0ai/agent-zero:latest
-    volumes:
-      - ./agent-zero:/a0
     ports:
-      - "50080:80"
+      - "50080:8080"
+    # drop most capabilities for safety
+    cap_drop:
+      - ALL
+    environment:
+      DOCKER_HOST: tcp://dind:2375     # point it at the sidecar
+    depends_on:
+      - dind
+
+  dind:                                # isolated Docker daemon
+    image: docker:25.0-dind
+    privileged: true                   # needed by dind
+    expose:
+      - "2375"
+    volumes:
+      - agentzero-build-cache:/var/lib/docker   # keeps images between runs
+
+volumes:
+  agentzero-build-cache:
