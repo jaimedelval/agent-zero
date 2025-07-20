@@ -1,28 +1,22 @@
 services:
   agent-zero:
     image: agent0ai/agent-zero:latest
-    user: "0:0"                  # run as root *inside* the container
+
+    # run as root INSIDE the container
+    user:  "0:0"
+
+    # allow setuid inside this one container
     security_opt:
-      - no-new-privileges:false
-    ports:
-      - "50080:80"
-    # drop most capabilities for safety
-    restart: unless-stopped
+      - no-new-privileges:false   # disables the kernel guard ONLY here
+
+    # still remove every dangerous capability
     cap_drop:
       - ALL
-    environment:
-      DOCKER_HOST: tcp://dind:2375     # point it at the sidecar
-      SEARXNG_DISABLED: "true"
+
+    # expose the UI
+    ports:
+      - "50080:80"
+
+    # keep the dind side-car for builds
     depends_on:
       - dind
-
-  dind:
-    image: docker:25.0-dind
-    privileged: true
-    expose:
-      - "2375"
-    volumes:
-      - agentzero-build-cache:/var/lib/docker
-
-volumes:
-  agentzero-build-cache:
