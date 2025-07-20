@@ -1,22 +1,10 @@
 services:
   agent-zero:
     image: agent0ai/agent-zero:latest
-
-    # run as root INSIDE the container
-    user:  "0:0"
-
-    # allow setuid inside this one container
+    user: "0:0"                        # root inside container
     security_opt:
-      - no-new-privileges:false   # disables the kernel guard ONLY here
-
-    # still remove every dangerous capability
+      - no-new-privileges:false        # allow setuid here only
     cap_drop:
-      - ALL
-
-    # expose the UI
+      - ALL                            # still no kernel caps
     ports:
       - "50080:80"
-
-    # keep the dind side-car for builds
-    depends_on:
-      - dind
